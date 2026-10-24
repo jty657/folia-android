@@ -11,6 +11,7 @@ on:
       - 'vite.config.ts'
       - 'capacitor.config.json'
       - 'index.html'
+      - '.github/workflows/android-build.yml'
   workflow_dispatch:
 
 permissions:
@@ -35,9 +36,6 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
@@ -59,6 +57,11 @@ jobs:
           sed -i '/org.gradle.java.home=/d' android/gradle.properties
 
       - name: Build debug APK
+        env:
+          # GitHub 的 ubuntu-latest 运行器预装了 Android SDK 与已接受的 licenses；直接用，不额外装
+          # cmdline-tools（android-actions/setup-android 会去装早已废弃的 'tools' 包而失败）。
+          ANDROID_HOME: /usr/local/lib/android/sdk
+          ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
         run: |
           cd android
           chmod +x gradlew
