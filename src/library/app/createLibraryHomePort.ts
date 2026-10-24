@@ -5,6 +5,8 @@ import { translateHomeMessage } from '../core/home/homeSources';
 import { importFolder, resyncAllFolders, LOCAL_MUSIC_SCAN_PROGRESS_EVENT } from '../../services/localMusicService';
 import { getLocalLibraryAvailability } from '../../services/localLibraryAvailability';
 import { importLocalPlaylistFile } from '../../services/localPlaylistFileService';
+import { parseLxmcFile } from '../../services/lxmcPlaylistService';
+import { importImportedOnlinePlaylist } from '../../stores/useImportedOnlinePlaylistStore';
 import { isAndroidNativeRuntime, scanAndroidDeviceMusic } from '../../services/nativeLocalMusic';
 import { omni } from '../../services/onlineMusic/omni';
 import {
@@ -27,6 +29,19 @@ export const createLibraryHomePort = (getSurface: () => HomePortSurface): Librar
     deviceScanAvailable: () => isAndroidNativeRuntime(),
     resyncAllFolders: async () => (await resyncAllFolders())?.length ?? 0,
     importPlaylistFile: async (file) => {
+        // .lxmc（洛雪在线歌单）与 .m3u/.m3u8（本地文件歌单）分开处理。
+        if (/\.lxmc$/i.test(file.name)) {
+            const parsed = await parseLxmcFile(file);
+            if (parsed.songs.length === 0) {
+                return { playlistName: null, matchedCount: 0, skippedCount: 0 };
+            }
+            await importImportedOnlinePlaylist(parsed.name, parsed.sourceListId, parsed.songs);
+            return {
+                playlistName: parsed.name,
+                matchedCount: parsed.songs.length,
+                skippedCount: 0,
+            };
+        }
         const result = await importLocalPlaylistFile(file, getSurface().localSongs);
         return {
             playlistName: result.playlist?.name ?? null,

@@ -454,6 +454,7 @@ export default {
     "previewQueueSearch": "Search current queue: {{query}}",
     "previewQueueSearchEmpty": "Type a song name, artist, album, or queue index",
     "pickerFilterPlaceholder": "Type to filter, then click or press Enter",
+    "customSourcePlaceholder": "Import or pick a source script below",
     "pickerCurrent": "Current: {{mode}}",
     "librarySuitePicker": { "active": "In use", "switch": "Switch the library to this interface" },
     "libraryWallPicker": { "active": "In use", "windows": "Windows per block: {{count}}", "windowsShare": "{{percent}}% of each block opens onto the visualizer", "seamStyle": "Info strip: {{style}}", "seamTheme": "Follows your theme colours", "seamPrint": "Fixed paper and ink, high contrast", "seamPattern": "A quiet pattern in your theme colours" },
@@ -606,6 +607,8 @@ export default {
       "settings-local-lyrics-priority": { "title": "Local song lyrics priority", "description": "Choose whether local songs prefer local or online lyrics" },
       "settings-local-lyric-format-order": { "title": "Local lyric file format priority", "description": "Choose which format wins when a track has several lyric files" },
       "settings-integration": { "title": "Integration settings", "description": "Open Stage, Now Playing, and Navidrome settings" },
+      "custom-source-toggle": { "title": "Third-party sound sources", "description": "Turn LX Music style source scripts on or off" },
+      "custom-source-manager": { "title": "Manage sound sources", "description": "Import and manage third-party sound source scripts" },
       "automix-toggle": { "title": "Smart transition", "description": "Turn FOLIA smart transitions on or off" },
       "transition-mode-crossfade": { "title": "Transition mode: Folia Crossfade", "description": "Use the simple one-out one-in crossfade" },
       "transition-mode-automix": { "title": "Transition mode: Folia Automix", "description": "Analyse both tracks and mix them automatically" },
@@ -2993,6 +2996,20 @@ export default {
 
       "autoHideCommandPaletteButton": "Auto-hide command palette button",
       "autoHideCommandPaletteButtonDesc": "The bottom command palette button hides when idle and comes back on touch.",  },
+  "customSource": {
+    "title": "Third-party sound sources",
+    "desc": "Use LX Music style source scripts to resolve playable audio URLs.",
+    "enable": "Enable",
+    "importLocal": "Import file",
+    "importRemote": "Import",
+    "remotePlaceholder": "Paste a source script URL",
+    "empty": "No source scripts imported yet.",
+    "fromLocal": "local file",
+    "imported": "Source imported",
+    "importFailed": "Script failed to initialize",
+    "readFailed": "Failed to read the file",
+    "remoteFailed": "Failed to fetch the remote source"
+  },
   "releaseNotes": {
     "v0_7_0": {
       "intro": "Here are the new features and improvements in version 0.7.0.",
@@ -3481,6 +3498,9 @@ export default {
     "artists": "Artists",
     "customPlaylists": "Playlists",
     "favoritePlaylist": "Liked Songs",
+    "importedPlaylists": "Imported playlists",
+    "importedPlaylist": "Imported playlist",
+    "noImportedPlaylistsFound": "No imported playlists yet",
     "unknownAlbum": "Unknown Album",
     "unknownArtist": "Unknown Artist",
     "folder": "Folder",

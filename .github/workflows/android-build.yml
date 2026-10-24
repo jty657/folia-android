@@ -1,0 +1,78 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [main, feat-custom-source]
+    paths:
+      - 'src/**'
+      - 'android/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'vite.config.ts'
+      - 'capacitor.config.json'
+      - 'index.html'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-build
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build Android debug APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v6
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build web app for Capacitor
+        env:
+          FOLIA_BUILD_TARGET: capacitor
+          VITE_NETEASE_API_BASE: extension
+          VITE_KUGOU_API_BASE: extension
+          VITE_QQ_API_BASE: extension
+        run: npm run build:capacitor
+
+      - name: Sync Android project
+        run: npx cap sync android
+
+      - name: Remove hardcoded Windows JDK path
+        run: |
+          # gradle.properties 里硬编码了本机 JDK 路径；CI 上用 setup-java 提供的 JDK 21，删掉这行。
+          sed -i '/org.gradle.java.home=/d' android/gradle.properties
+
+      - name: Build debug APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: folia-android-debug-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 30

@@ -1050,7 +1050,7 @@ export const kugouProvider: OnlineMusicProvider = {
     getAvailability: getKugouTransportAvailability,
     describeFailure: describeKugouFailure,
     capabilities: {
-        search: true, playback: true, lyrics: true, auth: true, userLibrary: true,
+        search: true, playback: true, lyrics: true, auth: false, userLibrary: true,
         playlists: true, albums: true, artists: true, recommendations: true, mutations: true,
         wordByWordLyrics: true, userCloud: true, historyRecommendations: true,
         playlistSubscription: true, playlistTrackMutations: true, likes: true, userAlbums: true,

@@ -454,6 +454,7 @@ export default {
     "previewQueueSearch": "Cari antrean saat ini: {{query}}",
     "previewQueueSearchEmpty": "Ketik nama lagu, artis, album, atau indeks antrean",
     "pickerFilterPlaceholder": "Ketik untuk menyaring, lalu klik atau tekan Enter",
+    "customSourcePlaceholder": "Impor atau pilih skrip sumber di bawah",
     "pickerCurrent": "Saat ini: {{mode}}",
     "librarySuitePicker": { "active": "Sedang dipakai", "switch": "Ganti pustaka ke antarmuka ini" },
     "libraryWallPicker": { "active": "Sedang dipakai", "windows": "Jendela per blok: {{count}}", "windowsShare": "{{percent}}% dari setiap blok tembus ke visualizer", "seamStyle": "Strip info: {{style}}", "seamTheme": "Mengikuti warna tema Anda", "seamPrint": "Kertas dan tinta tetap, kontras tinggi", "seamPattern": "Pola tenang dalam warna tema Anda" },
@@ -606,6 +607,8 @@ export default {
       "settings-local-lyrics-priority": { "title": "Prioritas lirik lagu lokal", "description": "Pilih apakah lagu lokal lebih mengutamakan lirik lokal atau online" },
       "settings-local-lyric-format-order": { "title": "Prioritas format file lirik lokal", "description": "Pilih format yang digunakan saat satu lagu memiliki beberapa file lirik" },
       "settings-integration": { "title": "Pengaturan integrasi", "description": "Buka pengaturan Stage, Now Playing, dan Navidrome" },
+      "custom-source-toggle": { "title": "Sumber suara pihak ketiga", "description": "Aktifkan atau nonaktifkan skrip sumber gaya LX Music" },
+      "custom-source-manager": { "title": "Kelola sumber suara", "description": "Impor dan kelola skrip sumber suara pihak ketiga" },
       "automix-toggle": { "title": "Transisi pintar", "description": "Aktifkan atau nonaktifkan transisi pintar FOLIA" },
       "transition-mode-crossfade": { "title": "Mode transisi: Folia Crossfade", "description": "Gunakan crossfade sederhana satu keluar satu masuk" },
       "transition-mode-automix": { "title": "Mode transisi: Folia Automix", "description": "Menganalisis kedua trek dan mencampurnya otomatis" },
@@ -2993,6 +2996,20 @@ export default {
 
       "autoHideCommandPaletteButton": "Sembunyikan otomatis tombol palette perintah",
       "autoHideCommandPaletteButtonDesc": "Tombol palette perintah di bawah tersembunyi saat diam dan kembali saat disentuh.",  },
+  "customSource": {
+    "title": "Sumber suara pihak ketiga",
+    "desc": "Gunakan skrip sumber gaya LX Music untuk mendapatkan URL audio yang dapat diputar.",
+    "enable": "Aktifkan",
+    "importLocal": "Impor file",
+    "importRemote": "Impor",
+    "remotePlaceholder": "Tempel URL skrip sumber",
+    "empty": "Belum ada skrip sumber yang diimpor.",
+    "fromLocal": "file lokal",
+    "imported": "Sumber diimpor",
+    "importFailed": "Skrip gagal diinisialisasi",
+    "readFailed": "Gagal membaca file",
+    "remoteFailed": "Gagal mengambil sumber jarak jauh"
+  },
   "releaseNotes": {
     "v0_7_0": {
       "intro": "Berikut fitur baru dan peningkatan di versi 0.7.0.",
@@ -3481,6 +3498,9 @@ export default {
     "artists": "Artis",
     "customPlaylists": "Playlist",
     "favoritePlaylist": "Lagu Disukai",
+    "importedPlaylists": "Playlist diimpor",
+    "importedPlaylist": "Playlist diimpor",
+    "noImportedPlaylistsFound": "Belum ada playlist diimpor",
     "unknownAlbum": "Album Tidak Dikenal",
     "unknownArtist": "Artis Tidak Dikenal",
     "folder": "Folder",

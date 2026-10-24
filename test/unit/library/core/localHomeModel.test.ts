@@ -29,7 +29,7 @@ const noCover = () => null;
 describe('buildLocalHomeGroups', () => {
     it('puts the virtual All Songs folder first and sorts real folders by name', () => {
         const songs = [song('s1', 'B'), song('s2', 'A'), song('s3', 'B')];
-        const groups = buildLocalHomeGroups(songs, [], t, undefined, noCover);
+        const groups = buildLocalHomeGroups(songs, [], [], t, undefined, noCover);
         expect(groups.folders.map(group => [group.id, group.isVirtual ?? false, group.trackCount])).toEqual([
             ['folder-__all-songs__', true, 3],
             ['folder-A', false, 1],
@@ -43,7 +43,7 @@ describe('buildLocalHomeGroups', () => {
             song('s9', 'A', { localCoverAssetId: 'new' }),
         ];
         const resolver = (assetId: string | undefined, size?: number) => (assetId ? `cover:${assetId}${size ? `@${size}` : ''}` : null);
-        const groups = buildLocalHomeGroups(songs, [], t, undefined, resolver);
+        const groups = buildLocalHomeGroups(songs, [], [], t, undefined, resolver);
         expect(groups.folders.find(group => group.id === 'folder-A')?.coverUrl).toBe('cover:new@512');
     });
 
@@ -53,7 +53,7 @@ describe('buildLocalHomeGroups', () => {
             { id: 'fav', name: 'Liked', songIds: ['s2'], isFavorite: true },
             { id: 'p1', name: 'Mine', songIds: ['s1', 'missing', 's2'] },
         ] as unknown as LocalPlaylist[];
-        const groups = buildLocalHomeGroups(songs, playlists, t, undefined, noCover);
+        const groups = buildLocalHomeGroups(songs, playlists, [], t, undefined, noCover);
         expect(groups.playlists.map(group => [group.id, group.isVirtual ?? false, group.songs.map(item => item.id)])).toEqual([
             ['playlist-fav', true, ['s2']],
             ['playlist-p1', false, ['s1', 's2']],
@@ -62,9 +62,9 @@ describe('buildLocalHomeGroups', () => {
 });
 
 describe('local home sections and cards', () => {
-    it('defines four sections in row order and maps any other row to folders', () => {
+    it('defines five sections in row order and maps any other row to folders', () => {
         expect(LOCAL_HOME_SECTIONS.map(section => [section.key, section.row])).toEqual([
-            ['folders', 0], ['albums', 1], ['artists', 2], ['playlists', 3],
+            ['folders', 0], ['albums', 1], ['artists', 2], ['playlists', 3], ['importedPlaylists', 4],
         ]);
         expect(localHomeSectionOfRow(2).key).toBe('artists');
         expect(localHomeSectionOfRow(9).key).toBe('folders');
@@ -95,7 +95,7 @@ describe('local home sections and cards', () => {
     });
 
     it('only folders, albums and artists support batch', () => {
-        expect(['folders', 'albums', 'artists', 'playlists'].map(key => localBatchSelectionType(key as never))).toEqual(['folders', 'albums', 'artists', null]);
+        expect(['folders', 'albums', 'artists', 'playlists', 'importedPlaylists'].map(key => localBatchSelectionType(key as never))).toEqual(['folders', 'albums', 'artists', null, null]);
     });
 });
 

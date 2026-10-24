@@ -2,6 +2,7 @@ import { noteLibraryStep } from '../../nativeBridge/api/libraryTrace.js';
 import type { SongResult, UnifiedSong } from '../../types';
 import { noteOnlineMutationFailure } from '../../utils/onlineMutationDiagnostics';
 import { proxyNativeRemoteAudioUrl } from '../nativeRemoteAudio';
+import { resolveCustomSourceAudio } from '../customSource/resolveCustomSource';
 import { noteOnlinePlaybackError, noteOnlinePlaybackOutcome } from '../../utils/onlinePlaybackDiagnostics';
 import type {
     AudioQualityPreference,
@@ -869,6 +870,19 @@ export const omni = {
         let source: OmniAudioSource | null;
         // Android 诊断：取流三档结果都留痕，报告能分辨「没给地址」与「provider 抛错」。
         const resolveStartedAt = Date.now();
+        // 第三方音源（洛雪式脚本）优先：仅当用户启用且脚本能给出地址时才使用，否则回退内置 provider。
+        try {
+            const customSource = await resolveCustomSourceAudio(song, quality);
+            if (customSource?.url) {
+                const proxied = await proxyNativeRemoteAudioUrl(customSource.url);
+                const customResolved = proxied !== customSource.url ? { ...customSource, url: proxied } : customSource;
+                noteOnlinePlaybackOutcome({ stage: 'resolve', outcome: 'ok', providerId: provider.id, quality: level, kind: 'custom-source', detail: this.describeResolvedAudioUrl(customResolved.url), elapsedMs: Date.now() - resolveStartedAt });
+                return customResolved;
+            }
+        } catch (error) {
+            // 第三方音源失败不阻断播放：打点后继续走内置 provider。
+            console.warn('[Omni] custom source audio resolve failed; falling back to built-in provider', error);
+        }
         try {
             source = await runRequest(provider, 'audio', async () => await (provider.playback?.getAudioSource(song, level) ?? null));
         } catch (error) {

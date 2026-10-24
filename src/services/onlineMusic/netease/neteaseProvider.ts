@@ -330,7 +330,7 @@ export const neteaseProvider: OnlineMusicProvider = {
         search: true,
         playback: true,
         lyrics: true,
-        auth: true,
+        auth: false,
         userLibrary: true,
         playlists: true,
         albums: true,

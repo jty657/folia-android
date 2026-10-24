@@ -49,7 +49,7 @@ describe('home special cards', () => {
             { id: 'fav', name: 'Liked', songIds: ['s1'], isFavorite: true, createdAt: 1, updatedAt: 1 } as LocalPlaylist,
             { id: 'mix', name: 'Mix', songIds: ['s2'], createdAt: 1, updatedAt: 1 } as LocalPlaylist,
         ];
-        const groups = buildLocalHomeGroups(songs, playlists, t, { entities: [], assignments: [] }, () => null);
+        const groups = buildLocalHomeGroups(songs, playlists, [], t, { entities: [], assignments: [] }, () => null);
         const special = (list: typeof groups.folders) => buildLocalHomeCards(list).map(card => resolveLibraryHomeSpecial(card, 'local'));
         expect(special(groups.folders)).toEqual(['all-songs', null, null]);
         expect(special(groups.playlists)).toEqual(['local-favorites', null]);

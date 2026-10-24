@@ -73,6 +73,7 @@ export const createLocalGridViewCollection = (group: LocalLibraryGroup): LocalGr
     ...(group.entityId ? { entityId: group.entityId } : {}),
     playlistId: group.playlistId,
     isVirtual: group.isVirtual,
+    ...(group.type === 'importedPlaylist' && group.importedSongs ? { importedSongs: group.importedSongs } : {}),
 });
 
 export const createNavidromeGridViewCollection = (
@@ -188,6 +189,11 @@ export const resolveLocalGridViewTracks = (
     localSongs: LocalSong[],
     catalog?: { entities: LocalLibraryEntity[]; assignments: LocalLibraryAssignment[]; },
 ): SongResult[] => {
+    // 导入的在线歌单：直接用 descriptor 里携带的 UnifiedSong，不走本地文件匹配。
+    if (descriptor.type === 'importedPlaylist' && descriptor.importedSongs) {
+        return descriptor.importedSongs as SongResult[];
+    }
+
     const songsById = new Map(localSongs.map(song => [song.id, song]));
     const orderedSongs = descriptor.songIds
         .map(songId => songsById.get(songId))

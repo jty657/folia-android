@@ -71,7 +71,8 @@ describe('omni routing', () => {
         const summaries = omni.getProviderSummaries();
 
         expect(summaries.find(summary => summary.providerId === providerId)?.requiresAccount).toBe(false);
-        expect(summaries.find(summary => summary.providerId === 'netease')?.requiresAccount).toBe(true);
+        // 三方平台（网易云/酷狗/QQ）已移除扫码登录，auth 能力关闭；用仍有 auth 的波点音乐作「需要账户」的参照。
+        expect(summaries.find(summary => summary.providerId === 'bodian')?.requiresAccount).toBe(true);
     });
 
     it('reports songs from unavailable providers as unplayable without routing them elsewhere', () => {

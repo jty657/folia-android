@@ -172,5 +172,10 @@ export const PLATFORM_NAME_PLACES: Record<string, PlatformNamePlace> = {
     'src/services/foliaExtensionBridge.ts': { n: { bodian: 1, kugou: 2, netease: 2, qq: 2, spotify: 1, ytm: 1 }, kind: 'main', why: 'Android 原生桥：该平台的协议实现住在 nativeBridge / extension bridge，与桌面版 server entry 同性质' },
     'src/nativeBridge/api/spotify.js': { n: { spotify: 70 }, kind: 'main', why: 'Spotify 的安卓侧桥实现，与桌面 electron/spotify 同性质' },
     'src/services/exportDiagnosticReport.ts': { n: { qq: 1 }, kind: 'main', why: '诊断导出时按文件名/来源标注平台名' },
+    // ─── 第三方音源（洛雪式脚本）适配层：平台 id → 洛雪源 key 的映射表，与 providerRegistry 同性质。
+    'src/services/customSource/types.ts': { n: { netease: 2, qq: 1, kugou: 2 }, kind: 'list', why: '洛雪源 key 列表（wy/kg/tx）与平台 cookie 附加字段名' },
+    'src/services/customSource/musicInfoMapper.ts': { n: { netease: 4, qq: 5, kugou: 4 }, kind: 'list', why: '平台 id → 洛雪源 key 的映射表（netease→wy/kugou→kg/qq→tx），及 qqMid 字段' },
+    'src/services/customSource/resolveCustomSource.ts': { n: { netease: 1, qq: 1, kugou: 1 }, kind: 'list', why: '注释里列举三家平台作为第三方音源的匹配对象' },
+    'src/services/lxmcPlaylistService.ts': { n: { netease: 1, kugou: 2 }, kind: 'list', why: '洛雪歌单（.lxmc）解析：注释里说明各家平台的稳定身份字段（网易云用 songId、酷狗用 hash）；平台↔洛雪 key 映射复用 customSource/musicInfoMapper' },
 };
 

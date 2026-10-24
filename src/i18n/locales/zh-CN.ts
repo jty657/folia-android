@@ -454,6 +454,7 @@ export default {
     "previewQueueSearch": "搜索当前队列：{{query}}",
     "previewQueueSearchEmpty": "输入歌名、歌手、专辑或队列序号",
     "pickerFilterPlaceholder": "输入以筛选，然后点击或按回车",
+    "customSourcePlaceholder": "在下方导入或选择一个音源脚本",
     "pickerCurrent": "当前：{{mode}}",
     "librarySuitePicker": { "active": "正在使用", "switch": "把资料库切换到这套界面" },
     "libraryWallPicker": { "active": "正在使用", "windows": "每块 {{count}} 个窗", "windowsShare": "每块 {{percent}}% 透出可视化", "seamStyle": "信息条：{{style}}", "seamTheme": "跟随主题配色", "seamPrint": "固定的纸与墨，高对比", "seamPattern": "主题色的安静图案" },
@@ -606,6 +607,8 @@ export default {
       "settings-local-lyrics-priority": { "title": "本地歌曲歌词优先级", "description": "选择本地歌曲优先使用本地或在线歌词" },
       "settings-local-lyric-format-order": { "title": "本地歌词文件格式优先级", "description": "调整同名歌词文件按哪种格式优先选用" },
       "settings-integration": { "title": "集成设置", "description": "打开 Stage、Now Playing 和 Navidrome 设置" },
+      "custom-source-toggle": { "title": "第三方音源", "description": "开启或关闭洛雪式音源脚本" },
+      "custom-source-manager": { "title": "管理音源", "description": "导入和管理第三方音源脚本" },
       "automix-toggle": { "title": "智能过渡", "description": "开启或关闭 FOLIA 智能过渡" },
       "transition-mode-crossfade": { "title": "过渡模式：Folia Crossfade", "description": "使用简单的一淡出一淡入交叉淡化" },
       "transition-mode-automix": { "title": "过渡模式：Folia Automix", "description": "分析两首曲目并自动混音" },
@@ -2993,6 +2996,20 @@ export default {
 
       "autoHideCommandPaletteButton": "自动隐藏命令面板按钮",
       "autoHideCommandPaletteButtonDesc": "底部命令面板按钮在无操作时自动收起，触摸屏幕后重新出现。",  },
+  "customSource": {
+    "title": "第三方音源",
+    "desc": "使用洛雪式音源脚本获取可播放的音频地址。",
+    "enable": "启用",
+    "importLocal": "导入文件",
+    "importRemote": "导入",
+    "remotePlaceholder": "粘贴音源脚本地址",
+    "empty": "还没有导入任何音源脚本。",
+    "fromLocal": "本地文件",
+    "imported": "音源已导入",
+    "importFailed": "脚本初始化失败",
+    "readFailed": "读取文件失败",
+    "remoteFailed": "获取远程音源失败"
+  },
   "releaseNotes": {
     "v0_7_0": {
       "intro": "以下是 0.7.0 的新功能与改进",
@@ -3481,6 +3498,9 @@ export default {
     "artists": "艺术家",
     "customPlaylists": "歌单",
     "favoritePlaylist": "我喜欢的音乐",
+    "importedPlaylists": "导入歌单",
+    "importedPlaylist": "导入歌单",
+    "noImportedPlaylistsFound": "还没有导入歌单",
     "unknownAlbum": "未知专辑",
     "unknownArtist": "未知艺术家",
     "folder": "本地",

@@ -150,6 +150,11 @@ const resolveLiveLocalCollection = (
     surfaceProps: HomeSurfaceProps,
     catalog: LibraryLocalCatalogSnapshot,
 ): LocalGridViewCollectionDescriptor | null => {
+    // 导入的在线歌单：descriptor 自带完整 UnifiedSong，不做本地歌单/文件刷新。
+    if (collection.type === 'importedPlaylist') {
+        return collection;
+    }
+
     if (!collection.playlistId) {
         return refreshLocalGridViewCollection(
             collection,

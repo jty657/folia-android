@@ -236,7 +236,7 @@ export const LibraryTuiLocalList: React.FC<LibraryTuiListCommonProps & {
         <input
             ref={playlistFileInputRef}
             type="file"
-            accept=".m3u,.m3u8,audio/x-mpegurl,application/vnd.apple.mpegurl"
+            accept=".m3u,.m3u8,.lxmc,audio/x-mpegurl,application/vnd.apple.mpegurl,application/gzip"
             className="hidden"
             data-tui-playlist-file
             onChange={(event) => {

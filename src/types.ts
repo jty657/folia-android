@@ -1392,12 +1392,26 @@ export interface LocalPlaylist {
   isFavorite?: boolean;
 }
 
-export type LocalLibraryGroupType = 'folder' | 'album' | 'artist' | 'playlist';
+/** 从洛雪 .lxmc 文件导入的在线歌单：歌曲是 UnifiedSong（在线来源），不是本地文件。 */
+export interface ImportedOnlinePlaylist {
+  id: string;
+  name: string;
+  /** 源平台 id（洛雪歌单的 source 字段，如 wy/kg）或文件来源标识。 */
+  sourceListId: string | null;
+  /** 歌单歌曲（UnifiedSong，含 sourceRef，播放走第三方音源取流）。 */
+  songs: UnifiedSong[];
+  createdAt: number;
+  updatedAt: number;
+}
+
+export type LocalLibraryGroupType = 'folder' | 'album' | 'artist' | 'playlist' | 'importedPlaylist';
 
 export interface LocalLibraryGroup {
   type: LocalLibraryGroupType;
   name: string;
   songs: LocalSong[];
+  /** 导入的在线歌单（.lxmc）的歌曲：UnifiedSong[]，播放走第三方音源；仅 type === 'importedPlaylist' 时有。 */
+  importedSongs?: UnifiedSong[];
   coverUrl?: string | Blob;
   id: string;
   isVirtual?: boolean;

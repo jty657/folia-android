@@ -56,6 +56,8 @@ export interface LocalGridViewCollectionDescriptor extends BaseGridViewCollectio
     entityId?: string;
     playlistId?: string;
     isVirtual?: boolean;
+    /** 导入的在线歌单（.lxmc）的歌曲：仅 type === 'importedPlaylist' 时有，播放走第三方音源。 */
+    importedSongs?: import('../../../types').UnifiedSong[];
 }
 
 export interface NavidromeGridViewCollectionDescriptor extends BaseGridViewCollectionDescriptor {

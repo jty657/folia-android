@@ -1533,7 +1533,7 @@ describe('qqProvider', () => {
         expect(qqProvider.capabilities).toMatchObject({
             search: true,
             lyrics: true,
-            auth: true,
+            auth: false,
             userLibrary: true,
             playlists: true,
             albums: true,

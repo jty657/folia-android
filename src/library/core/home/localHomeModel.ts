@@ -1,5 +1,5 @@
 import type { TFunction } from 'i18next';
-import { LocalLibraryGroup, LocalPlaylist, LocalSong } from '../../../types';
+import { ImportedOnlinePlaylist, LocalLibraryGroup, LocalPlaylist, LocalSong } from '../../../types';
 import { sortLocalAlbumSongs, sortLocalFolderSongs } from '../../../utils/localSongSorting';
 import type { LocalLibraryAssignment, LocalLibraryEntity } from '../../../types/localLibrary';
 import { getActiveEntities } from '../../../utils/localLibraryIndex';
@@ -47,6 +47,7 @@ const sortByName = <T extends { name: string }>(items: T[]) => (
 export const buildLocalHomeGroups = (
     localSongs: LocalSong[],
     localPlaylists: LocalPlaylist[],
+    importedPlaylists: ImportedOnlinePlaylist[],
     t: TFunction,
     catalog: { entities: LocalLibraryEntity[]; assignments: LocalLibraryAssignment[]; } | undefined,
     coverAssetUrl: LocalCoverAssetUrlResolver,
@@ -221,19 +222,32 @@ export const buildLocalHomeGroups = (
         };
     });
 
+    const importedPlaylistList: LocalLibraryGroup[] = importedPlaylists.map(playlist => ({
+        type: 'importedPlaylist' as const,
+        name: playlist.name,
+        songs: [],
+        importedSongs: playlist.songs,
+        coverUrl: playlist.songs[0]?.album?.coverUrl,
+        id: `imported-playlist-${playlist.id}`,
+        playlistId: playlist.id,
+        trackCount: playlist.songs.length,
+        description: t('localMusic.importedPlaylist'),
+    }));
+
     return {
         folders: folderList,
         albums: albumList,
         artists: artistList,
         playlists: playlistList,
+        importedPlaylists: importedPlaylistList,
     };
 };
 
 export type LocalHomeGroups = ReturnType<typeof buildLocalHomeGroups>;
 
-/** 本地页签的 section（顺序即 activeRow 0–3）。 */
-export type LocalHomeSectionKey = 'folders' | 'albums' | 'artists' | 'playlists';
-export type LocalHomeRow = 0 | 1 | 2 | 3;
+/** 本地页签的 section（顺序即 activeRow 0–4）。 */
+export type LocalHomeSectionKey = 'folders' | 'albums' | 'artists' | 'playlists' | 'importedPlaylists';
+export type LocalHomeRow = 0 | 1 | 2 | 3 | 4;
 
 export type LocalHomeSectionDefinition = {
     key: LocalHomeSectionKey;
@@ -249,6 +263,7 @@ export const LOCAL_HOME_SECTIONS: readonly LocalHomeSectionDefinition[] = [
     { key: 'albums', row: 1, labelKey: 'localMusic.albums', emptyKey: 'localMusic.noAlbumsFound' },
     { key: 'artists', row: 2, labelKey: 'localMusic.artists', emptyKey: 'localMusic.noArtistsFound' },
     { key: 'playlists', row: 3, labelKey: 'localMusic.customPlaylists', fallbackLabelKey: 'home.playlists', emptyKey: 'localMusic.noPlaylistsFound' },
+    { key: 'importedPlaylists', row: 4, labelKey: 'localMusic.importedPlaylists', emptyKey: 'localMusic.noImportedPlaylistsFound' },
 ];
 
 /** activeRow 对应的 section（越界时回到 folders）。 */
@@ -265,11 +280,13 @@ export const buildLocalHomeCards = (groups: readonly LocalLibraryGroup[]): Libra
     trackCount: group.trackCount,
     type: group.type,
     isVirtual: group.isVirtual,
-    trackIds: group.songs.map(song => song.id),
+    trackIds: group.type === 'importedPlaylist'
+        ? (group.importedSongs ?? []).map(song => String(song.id))
+        : group.songs.map(song => song.id),
     raw: group,
 }));
 
-/** 支持批量的本地 section（文件夹、专辑、歌手）；歌单没有批量。 */
+/** 支持批量的本地 section（文件夹、专辑、歌手）；歌单与导入歌单没有批量。 */
 export const localBatchSelectionType = (section: LocalHomeSectionKey): LibraryDirectorySelectionType | null => (
     section === 'folders' || section === 'albums' || section === 'artists' ? section : null
 );

@@ -214,7 +214,7 @@ export const LocalGrid3DView: React.FC<LocalGrid3DViewProps> = ({
             <input
                 ref={playlistFileInputRef}
                 type="file"
-                accept=".m3u,.m3u8,audio/x-mpegurl,application/vnd.apple.mpegurl"
+                accept=".m3u,.m3u8,.lxmc,audio/x-mpegurl,application/vnd.apple.mpegurl,application/gzip"
                 className="hidden"
                 onChange={(event) => {
                     const file = event.target.files?.[0];

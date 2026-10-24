@@ -6,12 +6,14 @@ import type { CommandPaletteCommand } from '../types';
 import { createToggleCommand, createAppLanguageCommand, createSettingsCommand, createSettingsAnchorCommand, defineCommand } from '../commandFactories';
 import { sleepTimerCommand } from './sleepTimerCommand';
 import { lyricExportCommands } from './lyricExportCommands';
-import { Gauge, Images, Layers3, Library } from 'lucide-react';
+import { Boxes, Gauge, Images, Layers3, Library } from 'lucide-react';
 import { latticePosterTintSurface } from '../surfaces/latticePosterTintSurface';
 import { gridViewCardsSurface } from '../surfaces/gridViewCardsSurface';
 import { reduceMotionSurface } from '../surfaces/reduceMotionSurface';
 import { librarySuitePickerSurface } from '../surfaces/librarySuitePickerSurface';
 import { libraryWallLookCommands } from './libraryWallLookCommands';
+import { customSourceSurface } from '../surfaces/customSourceSurface';
+import { useCustomSourceStore } from '../../../services/customSource/sourceStore';
 import { openCurrentPagePonder } from '../../../services/ponder/pagePonderTarget';
 import { copyText } from '../../../utils/system/clipboard';
 
@@ -136,6 +138,26 @@ export const settingsCommands: CommandPaletteCommand[] = [
     createSettingsAnchorCommand('settings-local-lyrics-priority', 'Local song lyrics priority', 'Choose whether local songs prefer local or online lyrics', ['local lyrics priority', 'online lyrics first', 'local song lyrics', '本地歌曲歌词优先级', '在线优先', '本地歌词', 'bendigeciyouxianji', 'bdgcyxj'], 'lyrics'),
     createSettingsAnchorCommand('settings-local-lyric-format-order', 'Local lyric file format priority', 'Choose which format wins when a track has several lyric files', ['lyric format priority', 'lyric file order', 'lrc ttml priority', '本地歌词文件格式优先级', '歌词格式', '格式优先级', 'geciwenjiangeshi', 'gcgsyxj'], 'localLyricFormatOrder'),
     createSettingsCommand('settings-integration', 'Integration settings', 'Open Stage, Now Playing, and Navidrome settings', ['integration', 'stage', 'now playing', 'navidrome settings', '集成', '连接'], 'options', 'integration'),
+    createToggleCommand(
+        'custom-source-toggle',
+        'settings',
+        'Third-party sound sources',
+        'Turn LX Music style source scripts on or off',
+        ['custom source', 'sound source', 'source script', 'lx music source', '第三方音源', '音源脚本', '自定义音源'],
+        () => useCustomSourceStore.getState().setEnabled(!useCustomSourceStore.getState().enabled),
+    ),
+    defineCommand({
+        id: 'custom-source-manager',
+        group: 'settings',
+        title: 'Manage sound sources',
+        description: 'Import and manage third-party sound source scripts',
+        keywords: ['sound source manager', 'import source script', 'custom source', 'lx music source', '音源管理', '导入音源', '第三方音源'],
+        icon: Boxes,
+        requiresInput: true,
+        surface: customSourceSurface,
+        placeholder: context => context.shared.t('commandPalette.customSourcePlaceholder', 'Import or pick a source script below'),
+        execute: () => false,
+    }),
     createSettingsAnchorCommand('settings-navidrome', 'Navidrome server', 'Jump to the Navidrome server connection', ['navidrome', 'subsonic', 'music server', '音乐服务器'], 'navidrome'),
     createSettingsAnchorCommand('settings-stage-mode', 'Stage mode', 'Jump to the Stage external player settings', ['stage', 'external player', '舞台模式'], 'stageMode'),
     {

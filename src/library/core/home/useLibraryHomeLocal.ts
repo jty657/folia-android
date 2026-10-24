@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useSyncExternalStore } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { LocalLibraryGroup, LocalPlaylist, LocalSong } from '../../../types';
+import { ensureImportedOnlinePlaylistsLoaded, useImportedOnlinePlaylistStore } from '../../../stores/useImportedOnlinePlaylistStore';
 import type { LibraryDirectoryBatchConfig, LibraryDirectoryBatchController, LibraryDirectoryNode, LibraryDirectorySelectionType } from '../directory/directory.contract';
 import type { LibraryLocalCatalogSnapshot } from './home.contract';
 import type { LibraryHomeCard, LibraryLocalDirectoryTreesResource, LibraryLocalDirectoryTreesSnapshot } from './homeModel.contract';
@@ -49,13 +50,19 @@ export const useLibraryHomeLocal = ({
 }): LibraryHomeLocal => {
     const { t } = useTranslation();
     const { ready, entities, assignments } = catalog;
+    const importedPlaylists = useImportedOnlinePlaylistStore(state => state.playlists);
+    // 挂载时确保导入歌单已加载（幂等；导入/删除时 store 内部会更新）。
+    useEffect(() => {
+        ensureImportedOnlinePlaylistsLoaded();
+    }, []);
     const groups = useMemo(() => buildLocalHomeGroups(
         localSongs,
         localPlaylists,
+        importedPlaylists,
         t,
         ready ? { entities, assignments } : undefined,
         getLocalCoverAssetUrl,
-    ), [assignments, entities, localPlaylists, localSongs, ready, t]);
+    ), [assignments, entities, importedPlaylists, localPlaylists, localSongs, ready, t]);
 
     const sections = useMemo<LibraryHomeLocalSection[]>(() => LOCAL_HOME_SECTIONS.map(section => {
         const sectionGroups = groups[section.key];
