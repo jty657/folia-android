@@ -48,11 +48,6 @@ jobs:
         run: npm ci
 
       - name: Build web app for Capacitor
-        env:
-          FOLIA_BUILD_TARGET: capacitor
-          VITE_NETEASE_API_BASE: extension
-          VITE_KUGOU_API_BASE: extension
-          VITE_QQ_API_BASE: extension
         run: npm run build:capacitor
 
       - name: Sync Android project
